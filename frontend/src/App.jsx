@@ -6,6 +6,7 @@ import RecordPage from './pages/RecordPage';
 import BoardPage from './pages/BoardPage';
 import UserPage from './pages/UserPage';
 import RootLayout from './layouts/RootLayout';
+import LoginPage from './pages/LoginPage';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,7 @@ const router = createBrowserRouter([
       { path: '/record', element: <RecordPage /> },
       { path: '/board', element: <BoardPage /> },
       { path: '/my', element: <UserPage /> },
+      { path: '/login', element: <LoginPage /> },
     ],
   },
 ]);
