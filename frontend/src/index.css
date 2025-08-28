@@ -1,5 +1,6 @@
 @import url('https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css');
 @import 'tailwindcss';
+@import 'tailwind-scrollbar-hide/v4';
 
 * {
   font-family: 'NanumSquare', sans-serif;

@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import OverallSchedule from '../components/Schedule/OverallSchedule';
 import LeagueSchedule from '../components/Schedule/LeagueSchedule';
+import useScrollTab from '../hooks/useScrollTab';
 
 const selectedStyle = `aria-selected:font-semibold aria-selected:text-blue-500 aria-selected:underline aria-selected:underline-offset-6`;
 
@@ -19,6 +20,7 @@ function SchedulePage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedDate = searchParams.get('date');
   const selectedCategory = searchParams.get('category');
+  const { setRef: setCategoryRef } = useScrollTab(selectedCategory);
 
   const onClickLeagueItem = category => {
     if (!category) {
@@ -34,6 +36,7 @@ function SchedulePage() {
         <ul className='scrollbar-hide flex snap-x flex-nowrap gap-6 overflow-x-auto'>
           {leagueItems.map(item => (
             <li
+              ref={el => setCategoryRef(el, item.category)}
               aria-selected={item.category === selectedCategory}
               key={item.name}
               onClick={() => onClickLeagueItem(item.category)}
