@@ -7,8 +7,10 @@ import BoardPage from './pages/BoardPage';
 import UserPage from './pages/UserPage';
 import RootLayout from './layouts/RootLayout';
 import LoginPage from './pages/LoginPage';
+import { scheduleLoader } from './loaders/scheduleLoader';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-const queryClient = new queryClient();
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
@@ -16,7 +18,11 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       { index: true, element: <HomePage /> },
-      { path: '/schedule', element: <SchedulePage /> },
+      {
+        path: '/schedule',
+        element: <SchedulePage />,
+        loader: scheduleLoader(queryClient),
+      },
       { path: '/record', element: <RecordPage /> },
       { path: '/board', element: <BoardPage /> },
       { path: '/my', element: <UserPage /> },
