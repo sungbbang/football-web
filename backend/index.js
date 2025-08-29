@@ -4,11 +4,15 @@ const { connectDB } = require('./config/db');
 const app = express();
 const port = 3000;
 
+const scheduleRoute = require('./routes/schedule');
+
 connectDB()
   .then(() => {
     app.get('/', (req, res) => {
       res.send('Hello World!');
     });
+
+    app.use('/api/schedule', scheduleRoute);
 
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
