@@ -10,3 +10,8 @@ export const fetchNearestDate = async dateString => {
   });
   return res.data;
 };
+
+export const fetchDateRange = async () => {
+  const res = await instance.get('/dateRange');
+  return res.data;
+};

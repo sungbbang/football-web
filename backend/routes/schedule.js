@@ -1,6 +1,30 @@
 const express = require('express');
 const router = express.Router();
 const Schedule = require('../models/Schedule');
+const League = require('../models/League');
+
+router.get('/dateRange', async (req, res) => {
+  try {
+    const leagueList = await League.find();
+    const dateList = [];
+    leagueList.forEach(league => {
+      league.seasons.forEach(season => {
+        dateList.push(season.start);
+        dateList.push(season.end);
+      });
+    });
+
+    dateList.sort((a, b) => a.getTime() - b.getTime());
+
+    res.json({
+      status: 'success',
+      result: { minDate: dateList[0], maxDate: dateList[dateList.length - 1] },
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: 'error', message: 'Server error' });
+  }
+});
 
 router.get('/all/nearest-date', async (req, res) => {
   try {
