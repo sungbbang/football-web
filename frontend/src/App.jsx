@@ -8,6 +8,8 @@ import UserPage from './pages/UserPage';
 import RootLayout from './layouts/RootLayout';
 import LoginPage from './pages/LoginPage';
 
+const queryClient = new queryClient();
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -24,7 +26,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  );
 }
 
 export default App;
