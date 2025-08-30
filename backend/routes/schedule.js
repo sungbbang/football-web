@@ -75,4 +75,42 @@ router.get('/all/nearest-date', async (req, res) => {
   }
 });
 
+router.get('/all/monthly', async (req, res) => {
+  try {
+    const queryDate = new Date(req.query.date);
+
+    // 유효하지 않은 날짜 포맷이면 400 반환
+    if (isNaN(queryDate.getTime())) {
+      return res.status(400).json({ status: 'error', message: 'Invalid date' });
+    }
+
+    const [y, m] = req.query.date.split('-').map(Number);
+
+    const start = new Date(y, m - 1);
+    const end = new Date(y, m, 1);
+
+    const monthlySchedule = await Schedule.find(
+      {
+        date: { $gte: start, $lt: end },
+      },
+      // 필요없는 필드는 제외
+      {
+        __v: 0,
+        _id: 0,
+        leagueSeason: 0,
+        awayTeamId: 0,
+        homeTeamId: 0,
+        leagueId: 0,
+      }
+    )
+      .sort({ date: 1 })
+      .lean();
+
+    res.json({ status: 'success', result: { schedule: monthlySchedule } });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: 'error', message: 'Server error' });
+  }
+});
+
 module.exports = router;
