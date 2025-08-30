@@ -80,14 +80,24 @@ function OverallSchedule({ selectedDate }) {
   const isPrevBtnDisable = selectedDate => {
     const [y, m] = selectedDate.split('-').map(Number);
 
-    const old_y = min_date.getFullYear();
-    const old_m = min_date.getMonth() + 1;
+    const min_y = min_date.getFullYear();
+    const min_m = min_date.getMonth() + 1;
+    const max_y = max_date.getFullYear();
+    const max_m = max_date.getMonth() + 1;
 
-    if (y < old_y) {
+    if (y > max_y) {
       return true;
     }
 
-    if (y === old_y && m <= old_m) {
+    if (y === max_y && m > max_m) {
+      return true;
+    }
+
+    if (y < min_y) {
+      return true;
+    }
+
+    if (y === min_y && m <= min_m) {
       return true;
     }
 
@@ -97,14 +107,24 @@ function OverallSchedule({ selectedDate }) {
   const isNextBtnDisable = selectedDate => {
     const [y, m] = selectedDate.split('-').map(Number);
 
-    const new_y = max_date.getFullYear();
-    const new_m = max_date.getMonth() + 1;
+    const min_y = min_date.getFullYear();
+    const min_m = min_date.getMonth() + 1;
+    const max_y = max_date.getFullYear();
+    const max_m = max_date.getMonth() + 1;
 
-    if (y > new_y) {
+    if (y < min_y) {
       return true;
     }
 
-    if (y === new_y && m >= new_m) {
+    if (y === min_y && m < min_m) {
+      return true;
+    }
+
+    if (y > max_y) {
+      return true;
+    }
+
+    if (y === max_y && m >= max_m) {
       return true;
     }
 
