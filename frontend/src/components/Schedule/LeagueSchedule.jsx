@@ -1,6 +1,6 @@
 import React from 'react';
 
-function LeagueSchedule() {
+function LeagueSchedule({ selectedDate, selectedCategory }) {
   return <div>LeagueSchedule</div>;
 }
 

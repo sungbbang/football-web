@@ -57,7 +57,6 @@ function SchedulePage() {
             <LeagueSchedule
               selectedDate={selectedDate}
               selectedCategory={selectedCategory}
-              setSearchParams={setSearchParams}
             />
           )}
         </div>
