@@ -4,8 +4,10 @@ const instance = axios.create({
   baseURL: `${import.meta.env.VITE_API_BASE_URL}/api/schedule`,
 });
 
-export const fetchNearestDate = async () => {
-  const res = await instance.get('/all/nearest-date');
+export const fetchNearestDate = async league => {
+  const res = await instance.get('/all/nearest-date', {
+    params: { category: league },
+  });
   return res.data;
 };
 

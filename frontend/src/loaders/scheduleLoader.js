@@ -25,7 +25,7 @@ export const scheduleLoader =
     else {
       if (!queryDate) {
         const data = await queryClient.ensureQueryData(
-          leagueClosestDateQuery(queryCategory),
+          nearestDateQuery(queryCategory),
         );
         throw redirect(`/schedule?category=${queryCategory}&date=${data}`, {
           replace: true,

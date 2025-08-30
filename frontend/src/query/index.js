@@ -5,10 +5,10 @@ import {
   fetchNearestDate,
 } from '../api/schedule';
 
-export const nearestDateQuery = () =>
+export const nearestDateQuery = categoryParam =>
   queryOptions({
-    queryKey: ['nearestDate', 'all'],
-    queryFn: fetchNearestDate,
+    queryKey: ['nearestDate', `${categoryParam ? categoryParam : 'all'}`],
+    queryFn: () => fetchNearestDate(categoryParam),
     staleTime: 1000 * 60 * 30,
   });
 
