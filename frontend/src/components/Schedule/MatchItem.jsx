@@ -14,6 +14,7 @@ function MatchItem({
   leagueName,
   stadium,
 }) {
+  const matchDate = new Date(date);
   return (
     <li>
       <Link to={`/schedule?category=${leagueName}&date=${formatDate(date)}`}>
@@ -22,7 +23,7 @@ function MatchItem({
             <span className='rounded-lg border border-gray-300 px-3 text-center text-sm font-semibold lg:mr-4 lg:text-base'>
               {isFinished
                 ? `${homeGoals} - ${awayGoals}`
-                : `${new Date(date).getHours().toString().padStart(2, '0')}:${new Date(date).getMinutes().toString().padStart(2, '0')}`}
+                : `${matchDate.getHours().toString().padStart(2, '0')}:${matchDate.getMinutes().toString().padStart(2, '0')}`}
             </span>
 
             <div className='flex flex-row-reverse items-center justify-start lg:flex-row lg:justify-end'>

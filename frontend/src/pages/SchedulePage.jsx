@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import OverallSchedule from '../components/Schedule/OverallSchedule';
 import LeagueSchedule from '../components/Schedule/LeagueSchedule';
 import useScrollTab from '../hooks/useScrollTab';
+import Loading from '../components/Loading/Loading';
 
 const selectedStyle = `aria-selected:font-semibold aria-selected:text-blue-500 aria-selected:underline aria-selected:underline-offset-6`;
 
@@ -49,7 +50,7 @@ function SchedulePage() {
 
         <div className='mt-10 space-y-10'>
           {!selectedCategory ? (
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<Loading />}>
               <OverallSchedule selectedDate={selectedDate} />
             </Suspense>
           ) : (
