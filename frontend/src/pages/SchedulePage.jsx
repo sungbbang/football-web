@@ -54,10 +54,12 @@ function SchedulePage() {
               <OverallSchedule selectedDate={selectedDate} />
             </Suspense>
           ) : (
-            <LeagueSchedule
-              selectedDate={selectedDate}
-              selectedCategory={selectedCategory}
-            />
+            <Suspense fallback={<Loading />}>
+              <LeagueSchedule
+                selectedDate={selectedDate}
+                selectedCategory={selectedCategory}
+              />
+            </Suspense>
           )}
         </div>
       </div>

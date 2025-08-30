@@ -22,3 +22,10 @@ export const fetchMonthlySchedule = async dateString => {
   });
   return res.data;
 };
+
+export const fetchSeasonSchedule = async (league, season) => {
+  const res = await instance.get('/seasonSchedule', {
+    params: { category: league, season: season },
+  });
+  return res.data;
+};

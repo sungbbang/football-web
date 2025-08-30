@@ -115,4 +115,31 @@ router.get('/all/monthly', async (req, res) => {
   }
 });
 
+router.get('/seasonSchedule', async (req, res) => {
+  try {
+    const queryCategory = req.query.category;
+    const querySeason = parseInt(req.query.season);
+
+    const seasonSchedule = await Schedule.find(
+      {
+        leagueName: queryCategory,
+        leagueSeason: querySeason,
+      }, // 필요없는 필드는 제외
+      {
+        __v: 0,
+        _id: 0,
+        leagueSeason: 0,
+        awayTeamId: 0,
+        homeTeamId: 0,
+        leagueId: 0,
+      }
+    ).sort({ date: 1 });
+
+    res.json({ status: 'success', result: seasonSchedule });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: 'error', message: 'Server error' });
+  }
+});
+
 module.exports = router;

@@ -1,6 +1,6 @@
 import { redirect } from 'react-router-dom';
 import { formatDate } from '../utils/formatDate';
-import { dateRangeQuery, nearestDateQuery } from '../query';
+import { dateRangeQuery, leagueInfoQuery, nearestDateQuery } from '../query';
 
 export const scheduleLoader =
   queryClient =>
@@ -24,28 +24,19 @@ export const scheduleLoader =
     // league loader
     else {
       if (!queryDate) {
-        const data = await queryClient.ensureQueryData(
+        const { result } = await queryClient.ensureQueryData(
           nearestDateQuery(queryCategory),
         );
-        throw redirect(`/schedule?category=${queryCategory}&date=${data}`, {
-          replace: true,
-        });
+        const resultDate = new Date(result.date);
+        const formattedDate = formatDate(resultDate);
+        throw redirect(
+          `/schedule?category=${queryCategory}&date=${formattedDate}`,
+          {
+            replace: true,
+          },
+        );
       }
 
-      const leagueInfo = await queryClient.ensureQueryData(
-        leagueInfoQuery(queryCategory, queryDate),
-      );
-
-      if (!leagueInfo) {
-        throw new Error('queryDate is invalid');
-      }
-
-      const seasonYear = leagueInfo.currSeason.year;
-
-      await queryClient.ensureQueryData(
-        leagueScheduleQuery(queryCategory, seasonYear),
-      );
-
-      return { queryCategory, queryDate, seasonYear };
+      await queryClient.ensureQueryData(leagueInfoQuery(queryCategory));
     }
   };

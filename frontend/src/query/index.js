@@ -3,7 +3,9 @@ import {
   fetchDateRange,
   fetchMonthlySchedule,
   fetchNearestDate,
+  fetchSeasonSchedule,
 } from '../api/schedule';
+import { fetchLeagueInfo } from '../api/league';
 
 export const nearestDateQuery = categoryParam =>
   queryOptions({
@@ -27,3 +29,17 @@ export const monthlyScheduleQuery = dateParam => {
     staleTime: 1000 * 60 * 60,
   });
 };
+
+export const leagueInfoQuery = categoryParam =>
+  queryOptions({
+    queryKey: ['leagueInfo', categoryParam],
+    queryFn: () => fetchLeagueInfo(categoryParam),
+    staleTime: 1000 * 60 * 60,
+  });
+
+export const seasonScheduleQuery = (categoryParam, seasonYear) =>
+  queryOptions({
+    queryKey: ['seasonSchedule', categoryParam, seasonYear],
+    queryFn: () => fetchSeasonSchedule(categoryParam, seasonYear),
+    staleTime: 1000 * 60 * 60,
+  });
