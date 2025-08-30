@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import OverallSchedule from '../components/Schedule/OverallSchedule';
 import LeagueSchedule from '../components/Schedule/LeagueSchedule';
@@ -49,7 +49,9 @@ function SchedulePage() {
 
         <div className='mt-10 space-y-10'>
           {!selectedCategory ? (
-            <OverallSchedule selectedDate={selectedDate} />
+            <Suspense fallback={<div>Loading...</div>}>
+              <OverallSchedule selectedDate={selectedDate} />
+            </Suspense>
           ) : (
             <LeagueSchedule
               selectedDate={selectedDate}

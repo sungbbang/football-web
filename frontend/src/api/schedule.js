@@ -15,3 +15,10 @@ export const fetchDateRange = async () => {
   const res = await instance.get('/dateRange');
   return res.data;
 };
+
+export const fetchMonthlySchedule = async dateString => {
+  const res = await instance.get('/all/monthly', {
+    params: { date: dateString },
+  });
+  return res.data;
+};

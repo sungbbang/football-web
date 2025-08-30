@@ -1,21 +1,6 @@
-import { queryOptions } from '@tanstack/react-query';
 import { redirect } from 'react-router-dom';
-import { fetchDateRange, fetchNearestDate } from '../api/schedule';
 import { formatDate } from '../utils/formatDate';
-
-export const nearestDateQuery = dateParam =>
-  queryOptions({
-    queryKey: ['nearestDate', 'all', dateParam],
-    queryFn: () => fetchNearestDate(dateParam),
-    staleTime: 1000 * 60 * 30,
-  });
-
-export const dateRangeQuery = () =>
-  queryOptions({
-    queryKey: ['dateRange'],
-    queryFn: fetchDateRange,
-    staleTime: 1000 * 60 * 60,
-  });
+import { dateRangeQuery, nearestDateQuery } from '../query';
 
 export const scheduleLoader =
   queryClient =>
@@ -26,15 +11,14 @@ export const scheduleLoader =
 
     // overall loader
     if (!queryCategory) {
-      const { result } = await queryClient.ensureQueryData(
-        nearestDateQuery(formatDate(queryDate)),
-      );
-      const resultDate = new Date(result.date);
-      const formattedDate = formatDate(resultDate);
-      if (queryDate !== formattedDate) {
+      if (!queryDate) {
+        const { result } = await queryClient.ensureQueryData(
+          nearestDateQuery(formatDate(queryDate)),
+        );
+        const resultDate = new Date(result.date);
+        const formattedDate = formatDate(resultDate);
         throw redirect(`/schedule?date=${formattedDate}`, { replace: true });
       }
-
       await queryClient.ensureQueryData(dateRangeQuery());
     }
     // league loader
