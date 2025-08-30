@@ -26,12 +26,23 @@ router.get('/dateRange', async (req, res) => {
   }
 });
 
-router.get('/all/nearest-date', async (req, res) => {
+router.get('/nearest-date', async (req, res) => {
   try {
     // 기준일 설정: 쿼리스트링이 있으면 해당 날짜, 없으면 오늘
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const queryCategory = req.query.category;
+
+    if (
+      queryCategory &&
+      !['epl', 'laliga', 'bundesliga', 'ligue1', 'serieA'].includes(
+        queryCategory
+      )
+    ) {
+      return res
+        .status(400)
+        .json({ status: 'error', message: 'Invalid category' });
+    }
 
     const baseQuery = {};
     if (queryCategory) {
