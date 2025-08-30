@@ -5,7 +5,7 @@ const instance = axios.create({
 });
 
 export const fetchNearestDate = async league => {
-  const res = await instance.get('/all/nearest-date', {
+  const res = await instance.get('/nearest-date', {
     params: { category: league },
   });
   return res.data;
