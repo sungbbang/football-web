@@ -21,8 +21,8 @@ const scheduleSchema = new mongoose.Schema({
 
   isFinished: { type: Boolean },
 
-  homeGoals: { type: Number },
-  awayGoals: { type: Number },
+  homeGoals: { type: Number, default: 0 },
+  awayGoals: { type: Number, default: 0 },
 });
 
 module.exports = mongoose.model('Schedule', scheduleSchema);

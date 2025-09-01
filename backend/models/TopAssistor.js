@@ -11,10 +11,10 @@ const topAssistorSchema = new mongoose.Schema({
   teamName: { type: String },
   teamLogo: { type: String },
 
-  goals: { type: Number },
-  assists: { type: Number },
-  pkGoals: { type: Number },
-  keyPasses: { type: Number },
+  goals: { type: Number, default: 0 },
+  assists: { type: Number, default: 0 },
+  pkGoals: { type: Number, default: 0 },
+  keyPasses: { type: Number, default: 0 },
   games: { type: Number },
   minutes: { type: Number },
 });
