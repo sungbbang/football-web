@@ -1,5 +1,9 @@
 import React from 'react';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  redirect,
+  RouterProvider,
+} from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import SchedulePage from './pages/SchedulePage';
 import RecordPage from './pages/RecordPage';
@@ -9,6 +13,7 @@ import RootLayout from './layouts/RootLayout';
 import LoginPage from './pages/LoginPage';
 import { scheduleLoader } from './loaders/scheduleLoader';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { recordLoader } from './loaders/recordLoader';
 
 const queryClient = new QueryClient();
 
@@ -23,7 +28,15 @@ const router = createBrowserRouter([
         element: <SchedulePage />,
         loader: scheduleLoader(queryClient),
       },
-      { path: '/record', element: <RecordPage /> },
+      {
+        path: '/record',
+        loader: () => redirect('/record/epl', { replace: true }),
+      },
+      {
+        path: '/record/:league',
+        element: <RecordPage />,
+        loader: recordLoader(queryClient),
+      },
       { path: '/board', element: <BoardPage /> },
       { path: '/my', element: <UserPage /> },
       { path: '/login', element: <LoginPage /> },

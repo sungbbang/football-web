@@ -6,6 +6,11 @@ import {
   fetchSeasonSchedule,
 } from '../api/schedule';
 import { fetchLeagueInfo } from '../api/league';
+import {
+  fetchTeamRecord,
+  fetchTopAssistorRecord,
+  fetchTopScorerRecord,
+} from '../api/record';
 
 export const nearestDateQuery = categoryParam =>
   queryOptions({
@@ -41,5 +46,26 @@ export const seasonScheduleQuery = (categoryParam, seasonYear) =>
   queryOptions({
     queryKey: ['seasonSchedule', categoryParam, seasonYear],
     queryFn: () => fetchSeasonSchedule(categoryParam, seasonYear),
+    staleTime: 1000 * 60 * 60,
+  });
+
+export const teamRecordQuery = (categoryParam, seasonYear) =>
+  queryOptions({
+    queryKey: ['teamRecord', categoryParam, seasonYear],
+    queryFn: () => fetchTeamRecord(categoryParam, seasonYear),
+    staleTime: 1000 * 60 * 60,
+  });
+
+export const topScorerRecordQuery = (categoryParam, seasonYear) =>
+  queryOptions({
+    queryKey: ['topScorerRecord', categoryParam, seasonYear],
+    queryFn: () => fetchTopScorerRecord(categoryParam, seasonYear),
+    staleTime: 1000 * 60 * 60,
+  });
+
+export const topAssistorRecordQuery = (categoryParam, seasonYear) =>
+  queryOptions({
+    queryKey: ['topAssistorRecord', categoryParam, seasonYear],
+    queryFn: () => fetchTopAssistorRecord(categoryParam, seasonYear),
     staleTime: 1000 * 60 * 60,
   });
