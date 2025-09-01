@@ -4,6 +4,8 @@ import useScrollTab from '../hooks/useScrollTab';
 import Loading from '../components/Loading/Loading';
 import TeamRecord from '../components/Record/TeamRecord';
 import PlayerRecord from '../components/Record/PlayRecord';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { leagueInfoQuery } from '../query';
 
 const selectedStyle = `aria-selected:font-semibold aria-selected:text-blue-500 aria-selected:underline aria-selected:underline-offset-6`;
 
@@ -24,7 +26,36 @@ const recordItems = [
 function RecordPage() {
   const { selectedLeague, selectedSeason, selectedTab } = useLoaderData();
   const { setRef: setLeagueRef } = useScrollTab(selectedLeague);
+  const { data } = useSuspenseQuery(leagueInfoQuery(selectedLeague));
   const navigate = useNavigate();
+
+  const hasPrevSeason = () => {
+    const prevSeason = data.result.seasons.find(
+      season => season.year === parseInt(selectedSeason) - 1,
+    );
+
+    return prevSeason;
+  };
+
+  const hasNextSeason = () => {
+    const nextSeason = data.result.seasons.find(
+      season => season.year === parseInt(selectedSeason) + 1,
+    );
+
+    return nextSeason;
+  };
+
+  const onClickPrevSeasonBtn = () => {
+    navigate(
+      `/record/${selectedLeague}?season=${hasPrevSeason().year}&tab=${selectedTab}`,
+    );
+  };
+
+  const onClickNextSeasonBtn = () => {
+    navigate(
+      `/record/${selectedLeague}?season=${hasNextSeason().year}&tab=${selectedTab}`,
+    );
+  };
 
   return (
     <div className='mt-15 space-y-20'>
@@ -45,9 +76,9 @@ function RecordPage() {
 
         <div className='mt-10 flex items-center justify-center text-2xl font-bold lg:text-3xl'>
           <button
-            // disabled={!hasPrevSeason()}
+            disabled={!hasPrevSeason()}
             className='cursor-pointer disabled:cursor-not-allowed disabled:opacity-20'
-            // onClick={onClickPrevSeasonBtn}
+            onClick={onClickPrevSeasonBtn}
           >
             &lt;
           </button>
@@ -56,9 +87,9 @@ function RecordPage() {
               `${selectedSeason}-${parseInt((selectedSeason + '').slice(2)) + 1}`}
           </span>
           <button
-            // disabled={!hasNextSeason()}
+            disabled={!hasNextSeason()}
             className='cursor-pointer disabled:cursor-not-allowed disabled:opacity-20'
-            // onClick={onClickNextSeasonBtn}
+            onClick={onClickNextSeasonBtn}
           >
             &gt;
           </button>
