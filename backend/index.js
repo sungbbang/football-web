@@ -7,6 +7,7 @@ const port = 3000;
 
 const scheduleRoute = require('./routes/schedule');
 const leagueRoute = require('./routes/league');
+const recordRoute = require('./routes/record');
 
 connectDB()
   .then(() => {
@@ -23,6 +24,7 @@ connectDB()
 
     app.use('/api/schedule', scheduleRoute);
     app.use('/api/league', leagueRoute);
+    app.use('/api/record', recordRoute);
 
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
