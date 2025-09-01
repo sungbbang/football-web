@@ -62,9 +62,7 @@ function OverallSchedule({ selectedDate }) {
   const onClickPrevMonthBtn = () => {
     const [y, m] = selectedDate.split('-').map(Number);
     const newDate = new Date(y, m - 1, 0);
-    console.log(newDate);
     if (min_date <= newDate) {
-      console.log('ok');
       nav(`/schedule?date=${formatDate(newDate)}`);
     }
   };
