@@ -75,7 +75,9 @@ function PlayerRecord({ tab, selectedLeague, selectedSeason }) {
                 <td className='bg-white text-center'>{item.games}</td>
                 <td className='bg-white text-center'>{item.minutes}</td>
                 <td className='bg-white text-center'>{item.pkGoals}</td>
-                <td className='bg-white text-center'>{item.keyPasses}</td>
+                <td className='bg-white text-center'>
+                  {item.keyPasses ? item.keyPasses : 0}
+                </td>
               </tr>
             ))
           )}
