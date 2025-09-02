@@ -119,4 +119,22 @@ router.post('/login', async (req, res) => {
   }
 });
 
+router.post('/logout', (req, res) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res
+      .status(400)
+      .json({ status: 'error', message: '이미 로그아웃된 상태입니다.' });
+  }
+
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: false,
+    sameSite: 'strict',
+  });
+
+  return res.json({ status: 'success', message: '로그아웃되었습니다.' });
+});
+
 module.exports = router;
