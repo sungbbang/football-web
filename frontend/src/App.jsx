@@ -14,6 +14,7 @@ import LoginPage from './pages/LoginPage';
 import { scheduleLoader } from './loaders/scheduleLoader';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { recordLoader } from './loaders/recordLoader';
+import { boardLoader } from './loaders/postLoader';
 
 const queryClient = new QueryClient();
 
@@ -37,7 +38,11 @@ const router = createBrowserRouter([
         element: <RecordPage />,
         loader: recordLoader(queryClient),
       },
-      { path: '/board', element: <BoardPage /> },
+      {
+        path: '/board',
+        element: <BoardPage />,
+        loader: boardLoader(queryClient),
+      },
       { path: '/my', element: <UserPage /> },
       { path: '/login', element: <LoginPage /> },
     ],
