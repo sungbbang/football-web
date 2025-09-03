@@ -15,6 +15,7 @@ import { scheduleLoader } from './loaders/scheduleLoader';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { recordLoader } from './loaders/recordLoader';
 import { boardLoader } from './loaders/postLoader';
+import { UserProvider } from './contexts/UserContext';
 
 const queryClient = new QueryClient();
 
@@ -51,9 +52,11 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
+    <UserProvider>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
+    </UserProvider>
   );
 }
 
