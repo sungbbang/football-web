@@ -16,6 +16,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { recordLoader } from './loaders/recordLoader';
 import { boardLoader } from './loaders/postLoader';
 import { UserProvider } from './contexts/UserContext';
+import AuthRedirectRoute from './routes/AuthRedirectRoute';
 
 const queryClient = new QueryClient();
 
@@ -44,8 +45,12 @@ const router = createBrowserRouter([
         element: <BoardPage />,
         loader: boardLoader(queryClient),
       },
+      {
+        path: '/login',
+        element: <AuthRedirectRoute />,
+        children: [{ index: true, element: <LoginPage /> }],
+      },
       { path: '/my', element: <UserPage /> },
-      { path: '/login', element: <LoginPage /> },
     ],
   },
 ]);
