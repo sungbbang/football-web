@@ -20,5 +20,8 @@ export const signOut = async () => {
 };
 
 export const signUp = async formData => {
-  await instance.post('/signup', formData);
+  await axios.post(
+    `${import.meta.env.VITE_API_BASE_URL}/api/user/signup`,
+    formData,
+  );
 };
