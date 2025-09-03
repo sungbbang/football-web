@@ -18,3 +18,7 @@ export const signIn = async formData => {
 export const signOut = async () => {
   await instance.post('/logout');
 };
+
+export const signUp = async formData => {
+  await instance.post('/signup', formData);
+};
