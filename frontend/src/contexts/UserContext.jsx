@@ -1,18 +1,49 @@
-import { createContext, useContext } from 'react';
-export const UserContext = createContext(null);
+import { createContext, useContext, useEffect, useState } from 'react';
+import { verifyToken } from '../api/user';
+const UserContext = createContext(null);
 
-export const useUserContext = () => {
+export const UserProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
+
+  useEffect(() => {
+    verifyToken()
+      .then(res => {
+        console.log(res);
+        setUser(res.data.user);
+        setIsAuthenticated(true);
+      })
+      .catch(error => {
+        console.log('토큰 인증 실패: ', error);
+        setUser(null);
+        setIsAuthenticated(false);
+      });
+  }, []);
+
+  const login = userData => {
+    setUser(userData);
+    setIsAuthenticated(true);
+  };
+
+  const logout = () => {
+    setUser(null);
+    setIsAuthenticated(false);
+  };
+
+  return (
+    <UserContext.Provider value={{ user, isAuthenticated, login, logout }}>
+      {children}
+    </UserContext.Provider>
+  );
+};
+
+export const useUser = () => {
   const context = useContext(UserContext);
 
   if (!context) {
-    throw new Error(
-      'useUserContext는 UserContextProvider 안에서 사용되어야 합니다.',
-    );
+    console.log('context: ', context);
+    throw new Error('context error');
   }
 
   return context;
-};
-
-export const UserProvider = ({ children }) => {
-  return <UserContext.Provider value={null}>{children}</UserContext.Provider>;
 };
