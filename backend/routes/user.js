@@ -137,4 +137,24 @@ router.post('/logout', (req, res) => {
   return res.json({ status: 'success', message: '로그아웃되었습니다.' });
 });
 
+router.post('/verify-token', (req, res) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res
+      .status(401)
+      .json({ status: 'error', message: '토큰이 없습니다.' });
+  }
+
+  try {
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    return res.status(200).json({ status: 'success', user: decodedToken });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(401)
+      .json({ status: 'error', message: '유효하지 않은 토큰입니다.' });
+  }
+});
+
 module.exports = router;
