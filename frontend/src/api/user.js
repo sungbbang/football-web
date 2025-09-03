@@ -12,3 +12,10 @@ export const verifyToken = async () => {
   );
   return res.data;
 };
+
+export const signIn = async formData => {
+  const res = await instance.post('/login', formData, {
+    withCredentials: true,
+  });
+  return res.data;
+};

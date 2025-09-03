@@ -1,13 +1,39 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { signIn } from '../api/user';
+import { useUser } from '../contexts/UserContext';
 
 function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const [error, setError] = useState(null);
+  const { login } = useUser();
   const navigate = useNavigate();
 
   const handleSubmitLogin = async e => {
     e.preventDefault();
+
+    const formData = {
+      email: emailRef.current.value,
+      password: passwordRef.current.value,
+    };
+
+    try {
+      const response = await signIn(formData);
+      login(response.result);
+      alert('로그인되었습니다.');
+      navigate(-1, { replace: true });
+    } catch (error) {
+      console.log(error);
+      const errorMessage =
+        error.response.data.message || '로그인에 실패했습니다.';
+      const remainingAttempts = error.response.data.remainingAttempts;
+
+      setError({
+        message: errorMessage,
+        remainingAttempts: remainingAttempts,
+      });
+    }
   };
 
   return (
@@ -29,11 +55,10 @@ function LoginPage() {
                 이메일
               </label>
               <input
+                ref={emailRef}
                 id='email'
                 type='email'
                 required
-                value={email}
-                onChange={e => setEmail(e.target.value)}
                 className='mt-1 block w-full rounded-lg border border-gray-300 px-4 py-3 transition-colors duration-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none'
                 placeholder='이메일'
               />
@@ -46,18 +71,26 @@ function LoginPage() {
                 비밀번호
               </label>
               <input
+                ref={passwordRef}
                 id='password'
                 type='password'
                 required
-                value={password}
-                onChange={e => setPassword(e.target.value)}
                 className='mt-1 block w-full rounded-lg border border-gray-300 px-4 py-3 transition-colors duration-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none'
                 placeholder='비밀번호'
               />
             </div>
           </div>
 
-          {/* error handliing */}
+          {error && (
+            <div className='rounded-lg bg-red-50 p-4 text-center text-base font-bold text-red-500'>
+              {typeof error === 'string' ? error : error.message}
+              {error.remainingAttempts !== undefined && (
+                <div className='mt-1'>
+                  남은 시도 횟수: {error.remainingAttempts}회
+                </div>
+              )}
+            </div>
+          )}
 
           <div className='flex justify-center'>
             <span

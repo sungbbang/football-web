@@ -9,8 +9,7 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     verifyToken()
       .then(res => {
-        console.log(res);
-        setUser(res.data.user);
+        setUser(res.result);
         setIsAuthenticated(true);
       })
       .catch(error => {
