@@ -1,14 +1,22 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../contexts/UserContext';
+import { signOut } from '../api/user';
 
 function UserPage() {
   const navigate = useNavigate();
+  const { user, logout } = useUser();
 
-  const handleLogOut = async () => {};
-
-  const user = {
-    username: 'abc@abc.com',
-    nickname: 'nickname',
+  const handleLogOut = async () => {
+    try {
+      await signOut();
+      logout();
+      alert('로그아웃되었습니다.');
+      navigate('/', { replace: true });
+    } catch (err) {
+      console.error(err);
+      alert('로그아웃 실패');
+    }
   };
 
   return (
