@@ -111,7 +111,7 @@ router.post('/login', async (req, res) => {
 
     return res.json({
       status: 'success',
-      user: userResponse,
+      result: userResponse,
     });
   } catch (error) {
     console.error(error);
@@ -148,7 +148,7 @@ router.post('/verify-token', (req, res) => {
 
   try {
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    return res.status(200).json({ status: 'success', user: decodedToken });
+    return res.status(200).json({ status: 'success', result: decodedToken });
   } catch (error) {
     console.error(error);
     return res
