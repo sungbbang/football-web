@@ -17,6 +17,11 @@ export const fetchPosts = async () => {
 };
 
 export const fetchPostById = async id => {
-  const res = await instance.get('/', { params: { postId: id } });
+  const res = await instance.get(`/${id}`);
+  return res.data;
+};
+
+export const likePost = async id => {
+  const res = await instance.post(`/${id}/like`, {}, { withCredentials: true });
   return res.data;
 };
