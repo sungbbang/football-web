@@ -12,6 +12,7 @@ const leagueRoute = require('./routes/league');
 const recordRoute = require('./routes/record');
 const userRoute = require('./routes/user');
 const postRoute = require('./routes/post');
+const commentRoute = require('./routes/comment');
 
 connectDB()
   .then(() => {
@@ -33,6 +34,7 @@ connectDB()
     app.use('/api/record', recordRoute);
     app.use('/api/user', userRoute);
     app.use('/api/post', postRoute);
+    app.use('/api/comment', commentRoute);
 
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
