@@ -1,11 +1,12 @@
 const express = require('express');
 const Post = require('../models/Post');
+const { authenticateToken } = require('../middlewares/authMiddleware');
 const router = express.Router();
 
-router.post('/', async (req, res) => {
+router.post('/', authenticateToken, async (req, res) => {
   try {
-    const { title, content, author } = req.body;
-    const { _id, nickname } = author;
+    const { title, content } = req.body;
+    const { _id, nickname } = req.user;
     if (!title || !content) {
       return res
         .status(400)
@@ -24,7 +25,7 @@ router.post('/', async (req, res) => {
     });
 
     const savedPost = await post.save();
-    res.status(201).json(savedPost);
+    res.status(201).json({ status: 'success', result: savedPost });
   } catch (err) {
     console.error(err);
     res.status(500).json({ status: 'error', message: 'Server error' });
