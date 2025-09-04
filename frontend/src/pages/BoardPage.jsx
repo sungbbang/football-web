@@ -3,10 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import PostItem from '../components/Post/PostItem';
 import { formatPostDate } from '../utils/formatPostDate';
 import { useUser } from '../contexts/UserContext';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { postsQuery } from '../query';
 
 function BoardPage() {
   const navigate = useNavigate();
-  const [posts, setPosts] = useState([]);
+  const { data: postData } = useSuspenseQuery(postsQuery());
+  const posts = postData.result;
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');

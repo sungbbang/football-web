@@ -10,3 +10,8 @@ export const createPost = async postData => {
   });
   return res.data;
 };
+
+export const fetchPosts = async () => {
+  const res = await instance.get('/');
+  return res.data;
+};
