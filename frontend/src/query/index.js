@@ -12,6 +12,7 @@ import {
   fetchTopScorerRecord,
 } from '../api/record';
 import { fetchPostById, fetchPosts } from '../api/post';
+import { fetchCommentByPostId } from '../api/comment';
 
 export const nearestDateQuery = categoryParam =>
   queryOptions({
@@ -82,5 +83,12 @@ export const postQuery = postId =>
   queryOptions({
     queryKey: ['post', postId],
     queryFn: () => fetchPostById(postId),
+    staleTime: 1000 * 60 * 1,
+  });
+
+export const commentQuery = postId =>
+  queryOptions({
+    queryKey: ['comment', postId],
+    queryFn: () => fetchCommentByPostId(postId),
     staleTime: 1000 * 60 * 1,
   });
