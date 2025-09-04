@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PostItem from '../components/Post/PostItem';
 import { formatPostDate } from '../utils/formatPostDate';
+import { useUser } from '../contexts/UserContext';
 
 function BoardPage() {
   const navigate = useNavigate();
@@ -10,7 +11,7 @@ function BoardPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [searchType, setSearchType] = useState('title');
-  const user = !true;
+  const { user } = useUser();
 
   const filteredPosts = useMemo(() => {
     return posts.filter(post => {

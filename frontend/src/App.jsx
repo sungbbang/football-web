@@ -19,6 +19,7 @@ import { UserProvider } from './contexts/UserContext';
 import AuthRedirectRoute from './routes/AuthRedirectRoute';
 import RegisterPage from './pages/RegisterPage';
 import ProtectedRoute from './routes/ProtectedRoute';
+import PostCreatePage from './pages/PostCreatePage';
 
 const queryClient = new QueryClient();
 
@@ -56,7 +57,10 @@ const router = createBrowserRouter([
       },
       {
         element: <ProtectedRoute />,
-        children: [{ path: '/my', element: <UserPage /> }],
+        children: [
+          { path: '/my', element: <UserPage /> },
+          { path: '/write', element: <PostCreatePage /> },
+        ],
       },
     ],
   },
