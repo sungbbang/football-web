@@ -80,7 +80,7 @@ function BoardPage() {
         >
           <option value='title'>제목</option>
           <option value='content'>내용</option>
-          <option value='author'>글쓴이</option>
+          <option value='authorNickname'>글쓴이</option>
         </select>
         <div className='flex-1 md:w-80'>
           <input
