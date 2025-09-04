@@ -5,14 +5,19 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    const postId = req.query.postId;
-    if (!postId) {
-      const posts = await Post.find().sort({ createdAt: -1 });
-      res.json({ status: 'success', result: posts });
-    } else {
-      const post = await Post.findById(postId);
-      res.json({ status: 'success', result: post });
-    }
+    const posts = await Post.find().sort({ createdAt: -1 });
+    res.json({ status: 'success', result: posts });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: 'error', message: 'Server error' });
+  }
+});
+
+router.get('/:id', async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const post = await Post.findById(postId);
+    res.json({ status: 'success', result: post });
   } catch (err) {
     console.error(err);
     res.status(500).json({ status: 'error', message: 'Server error' });
