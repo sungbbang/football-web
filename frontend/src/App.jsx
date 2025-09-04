@@ -14,12 +14,13 @@ import LoginPage from './pages/LoginPage';
 import { scheduleLoader } from './loaders/scheduleLoader';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { recordLoader } from './loaders/recordLoader';
-import { postsLoader } from './loaders/postLoader';
+import { postLoader, postsLoader } from './loaders/postLoader';
 import { UserProvider } from './contexts/UserContext';
 import AuthRedirectRoute from './routes/AuthRedirectRoute';
 import RegisterPage from './pages/RegisterPage';
 import ProtectedRoute from './routes/ProtectedRoute';
 import PostCreatePage from './pages/PostCreatePage';
+import PostPage from './pages/PostPage';
 
 const queryClient = new QueryClient();
 
@@ -47,6 +48,11 @@ const router = createBrowserRouter([
         path: '/board',
         element: <BoardPage />,
         loader: postsLoader(queryClient),
+      },
+      {
+        path: '/board/:id',
+        element: <PostPage />,
+        loader: postLoader(queryClient),
       },
       {
         element: <AuthRedirectRoute />,
