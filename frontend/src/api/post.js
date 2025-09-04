@@ -15,3 +15,8 @@ export const fetchPosts = async () => {
   const res = await instance.get('/');
   return res.data;
 };
+
+export const fetchPostById = async id => {
+  const res = await instance.get('/', { params: { postId: id } });
+  return res.data;
+};
