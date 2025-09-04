@@ -5,7 +5,8 @@ const instance = axios.create({
 });
 
 export const createPost = async postData => {
-  await instance.post('/', postData, {
+  const res = await instance.post('/', postData, {
     withCredentials: true,
   });
+  return res.data;
 };

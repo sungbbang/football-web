@@ -1,15 +1,12 @@
 import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Editor } from '@tinymce/tinymce-react';
-import { useUser } from '../contexts/UserContext';
 import { createPost } from '../api/post';
 
 function PostCreatePage() {
   const navigate = useNavigate();
   const titleRef = useRef(null);
   const editorRef = useRef(null);
-
-  const { user } = useUser();
 
   const handleSubmitForm = async e => {
     e.preventDefault();
@@ -27,13 +24,12 @@ function PostCreatePage() {
     const postData = {
       title: titleRef.current.value,
       content: editorContent,
-      author: user,
     };
 
     try {
-      await createPost(postData);
+      const { result } = await createPost(postData);
       alert('게시글 등록 성공!');
-      navigate('/board', { replace: true });
+      navigate(`/board/${result._id}`, { replace: true });
     } catch (error) {
       console.error(
         '게시글 등록 실패:',
@@ -44,7 +40,7 @@ function PostCreatePage() {
   };
 
   return (
-    <div className='mt-15 space-y-10 px-4 sm:px-10'>
+    <div className='mt-15 space-y-10'>
       <h1 className='text-left text-xl font-bold md:text-2xl lg:text-3xl'>
         글쓰기
       </h1>
