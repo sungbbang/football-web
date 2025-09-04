@@ -3,6 +3,16 @@ const Post = require('../models/Post');
 const { authenticateToken } = require('../middlewares/authMiddleware');
 const router = express.Router();
 
+router.get('/', async (req, res) => {
+  try {
+    const posts = await Post.find().sort({ createdAt: -1 });
+    res.json({ status: 'success', result: posts });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: 'error', message: 'Server error' });
+  }
+});
+
 router.post('/', authenticateToken, async (req, res) => {
   try {
     const { title, content } = req.body;
