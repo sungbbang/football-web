@@ -55,50 +55,39 @@ router.post('/', authenticateToken, async (req, res) => {
 
 router.post('/:id/like', authenticateToken, async (req, res) => {
   try {
-    const { _id: userId } = req.user;
-    const post = await Post.findById(req.params.id);
+    const userId = req.user._id;
+    const postId = req.params.id;
+
+    const post = await Post.findById(postId);
     if (!post) {
       return res
         .status(404)
-        .json({ status: ' error', message: '게시글을 찾을 수 없습니다.' });
+        .json({ status: 'error', message: '게시글을 찾을 수 없습니다.' });
     }
 
-    const hasLiked = post.likedUsers.some(idInArray =>
-      idInArray.equals(userId)
-    );
-
-    let updateOperation = {};
-    let isLikedNow = hasLiked;
-
-    if (hasLiked) {
-      updateOperation = {
-        $pull: { likedUsers: userId },
-        $inc: { likesCount: -1 },
-      };
-      isLikedNow = false;
-    } else {
-      updateOperation = {
-        $addToSet: { likedUsers: userId },
-        $inc: { likesCount: 1 },
-      };
-      isLikedNow = true;
-    }
+    const hasLiked = post.likedUsers.some(id => id.equals(userId));
 
     const updatedPost = await Post.findByIdAndUpdate(
-      req.params.id,
-      updateOperation,
+      postId,
+      hasLiked
+        ? { $pull: { likedUsers: userId }, $inc: { likesCount: -1 } }
+        : { $addToSet: { likedUsers: userId }, $inc: { likesCount: 1 } },
       { new: true }
     );
 
     if (!updatedPost) {
       return res.status(404).json({
-        status: ' error',
+        status: 'error',
         message: '게시글을 찾을 수 없어 좋아요를 처리할 수 없습니다.',
       });
     }
 
     res.status(200).json({
       status: 'success',
+      data: {
+        isLiked: !hasLiked,
+        likesCount: updatedPost.likesCount,
+      },
     });
   } catch (err) {
     console.error(err);
