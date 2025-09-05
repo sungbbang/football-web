@@ -13,6 +13,8 @@ import RootLayout from './layouts/RootLayout';
 import LoginPage from './pages/LoginPage';
 import { scheduleLoader } from './loaders/scheduleLoader';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
 import { recordLoader } from './loaders/recordLoader';
 import { postLoader, postsLoader } from './loaders/postLoader';
 import { UserProvider } from './contexts/UserContext';
@@ -76,6 +78,7 @@ function App() {
   return (
     <UserProvider>
       <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
         <RouterProvider router={router} />
       </QueryClientProvider>
     </UserProvider>
