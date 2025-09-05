@@ -1,15 +1,11 @@
 import React, { Suspense, useRef } from 'react';
 import { useLoaderData, useNavigate } from 'react-router-dom';
-import {
-  useMutation,
-  useQueryClient,
-  useSuspenseQuery,
-} from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { postQuery } from '../query';
 import { useUser } from '../contexts/UserContext';
 import { formatPostDate } from '../utils/formatPostDate';
 import Loading from '../components/Loading/Loading';
-import { likePost } from '../api/post';
+import { useLikeMutation } from '../hooks/useLikeMutation';
 
 function PostPage() {
   const navigate = useNavigate();
@@ -21,40 +17,7 @@ function PostPage() {
   const isLike = post.likedUsers.includes(user._id);
   const commentRef = useRef(null);
 
-  const queryClient = useQueryClient();
-
-  const { mutate: likeMutate } = useMutation({
-    mutationFn: likePost,
-    onMutate: async () => {
-      await queryClient.cancelQueries(['post', postId]);
-
-      const previousPost = queryClient.getQueryData(['post', postId]);
-
-      // 낙관적 업데이트
-      queryClient.setQueryData(['post', postId], old => {
-        if (!old) return old;
-        const alreadyLiked = old.result.likedUsers.includes(user._id);
-        return {
-          ...old,
-          result: {
-            ...old.result,
-            likedUsers: alreadyLiked
-              ? old.result.likedUsers.filter(id => id !== user._id)
-              : [...old.result.likedUsers, user._id],
-            likesCount: alreadyLiked
-              ? old.result.likesCount - 1
-              : old.result.likesCount + 1,
-          },
-        };
-      });
-
-      // 롤백용으로 이전 데이터 반환
-      return { previousPost };
-    },
-    onError: (err, _, context) => {
-      queryClient.setQueryData(['post', postId], context.previousPost);
-    },
-  });
+  const { mutate: likeMutate } = useLikeMutation(postId, user._id);
 
   return (
     <div className='mt-15'>
