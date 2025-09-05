@@ -24,6 +24,43 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+router.patch('/:id', authenticateToken, async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const { title, content } = req.body;
+    const userId = req.user._id;
+
+    const post = await Post.findById(postId);
+    if (!post)
+      return res
+        .status(404)
+        .json({ status: 'error', message: '게시글이 존재하지 않습니다.' });
+
+    if (post.authorId.toString() !== userId.toString()) {
+      return res.status(403).json({
+        status: 'error',
+        message: '작성자가 아니므로 권한이 없습니다.',
+      });
+    }
+
+    if (!title || !content) {
+      return res
+        .status(400)
+        .json({ status: 'error', message: '제목과 내용은 필수입니다.' });
+    }
+
+    if (title) post.title = title;
+    if (content) post.content = content;
+
+    await post.save();
+
+    res.json({ status: 'success', result: post });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: 'error', message: 'Server error' });
+  }
+});
+
 router.post('/', authenticateToken, async (req, res) => {
   try {
     const { title, content } = req.body;
