@@ -1,19 +1,21 @@
-import { mutationOptions } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { likePost } from '../api/post';
 
-export const likePostMutation = (queryClient, postId, userId) =>
-  mutationOptions({
+export function useLikePostMutation(postId, userId) {
+  const queryClient = useQueryClient();
+  const keys = ['post', postId];
+  return useMutation({
     mutationFn: () => likePost(postId),
     onMutate: async () => {
-      await queryClient.cancelQueries(['post', postId]);
+      await queryClient.cancelQueries({ queryKey: keys });
 
       const previousPost = queryClient.getQueryData({
-        queryKey: ['post', postId],
+        queryKey: keys,
       });
 
       queryClient.setQueryData(
         {
-          queryKey: ['post', postId],
+          queryKey: keys,
         },
         old => {
           if (!old) return old;
@@ -38,15 +40,16 @@ export const likePostMutation = (queryClient, postId, userId) =>
     onError: (err, _, context) => {
       queryClient.setQueryData(
         {
-          queryKey: ['post', postId],
+          queryKey: keys,
         },
         context.previousPost,
       );
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ['post', postId],
+        queryKey: keys,
       });
       queryClient.invalidateQueries({ queryKey: ['posts'] });
     },
   });
+}

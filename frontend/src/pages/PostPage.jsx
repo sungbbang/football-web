@@ -5,7 +5,7 @@ import { postQuery } from '../query';
 import { useUser } from '../contexts/UserContext';
 import { formatPostDate } from '../utils/formatPostDate';
 import Loading from '../components/Loading/Loading';
-import { useLikeMutation } from '../hooks/useLikeMutation';
+import { useLikePostMutation } from '../hooks/useLikePostMutation';
 
 function PostPage() {
   const navigate = useNavigate();
@@ -16,8 +16,7 @@ function PostPage() {
 
   const isLike = post.likedUsers.includes(user._id);
   const commentRef = useRef(null);
-
-  const { mutate: likeMutate } = useLikeMutation(postId, user._id);
+  const { mutate: likeMutate } = useLikePostMutation(postId, user._id);
 
   return (
     <div className='mt-15'>
@@ -65,7 +64,7 @@ function PostPage() {
       ) : (
         <div className='text-right'>
           <button
-            onClick={() => likeMutate(postId)}
+            onClick={likeMutate}
             className='mb-5 rounded-lg border border-red-400 bg-red-400 px-3 py-1 text-sm text-white hover:border-red-500 hover:bg-red-500 md:text-base'
           >
             {isLike ? '추천취소' : '추천하기'}

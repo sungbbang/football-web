@@ -1,12 +1,14 @@
 import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Editor } from '@tinymce/tinymce-react';
-import { createPost } from '../api/post';
+import { useCreatePostMutation } from '../hooks/useCreatePostMutation';
 
 function PostCreatePage() {
   const navigate = useNavigate();
   const titleRef = useRef(null);
   const editorRef = useRef(null);
+
+  const { mutate: createMutate } = useCreatePostMutation();
 
   const handleSubmitForm = async e => {
     e.preventDefault();
@@ -26,17 +28,7 @@ function PostCreatePage() {
       content: editorContent,
     };
 
-    try {
-      const { result } = await createPost(postData);
-      alert('게시글 등록 성공!');
-      navigate(`/board/${result._id}`, { replace: true });
-    } catch (error) {
-      console.error(
-        '게시글 등록 실패:',
-        error.response ? error.response.data : error.message,
-      );
-      alert('게시글 등록에 실패했습니다. 다시 시도해주세요.');
-    }
+    createMutate(postData);
   };
 
   return (
