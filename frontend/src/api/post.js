@@ -32,3 +32,8 @@ export const editPost = async (id, postData) => {
   });
   return res.data;
 };
+
+export const deletePost = async id => {
+  const res = await instance.delete(`/${id}`, { withCredentials: true });
+  return res.data;
+};

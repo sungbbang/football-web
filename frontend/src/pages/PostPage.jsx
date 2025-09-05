@@ -6,6 +6,7 @@ import { useUser } from '../contexts/UserContext';
 import { formatPostDate } from '../utils/formatPostDate';
 import Loading from '../components/Loading/Loading';
 import { useLikePostMutation } from '../hooks/useLikePostMutation';
+import { useDeletePostMutation } from '../hooks/useDeletePostMutation';
 
 function PostPage() {
   const navigate = useNavigate();
@@ -14,9 +15,10 @@ function PostPage() {
   const { data: postData } = useSuspenseQuery(postQuery(postId));
   const post = postData.result;
 
-  const isLike = post.likedUsers.includes(user._id);
+  const isLike = post.likedUsers.includes(user?._id);
   const commentRef = useRef(null);
-  const { mutate: likeMutate } = useLikePostMutation(postId, user._id);
+  const { mutate: likeMutate } = useLikePostMutation(postId, user?._id);
+  const { mutate: deleteMutate } = useDeletePostMutation(postId);
 
   return (
     <div className='mt-15'>
@@ -49,7 +51,7 @@ function PostPage() {
         ></div>
       </article>
 
-      {user._id === post.authorId ? (
+      {user && user._id === post.authorId ? (
         <div className='space-x-2 text-right'>
           <button
             onClick={() => navigate(`/edit-post/${post._id}`)}
@@ -57,14 +59,27 @@ function PostPage() {
           >
             수정
           </button>
-          <button className='mb-5 rounded-lg border border-red-400 bg-red-400 px-4 py-1 text-sm text-white hover:border-red-500 hover:bg-red-500 md:text-base'>
+          <button
+            onClick={() => {
+              if (window.confirm('게시글을 삭제하시겠습니까?')) {
+                deleteMutate();
+              }
+            }}
+            className='mb-5 rounded-lg border border-red-400 bg-red-400 px-4 py-1 text-sm text-white hover:border-red-500 hover:bg-red-500 md:text-base'
+          >
             삭제
           </button>
         </div>
       ) : (
         <div className='text-right'>
           <button
-            onClick={likeMutate}
+            onClick={() => {
+              if (!user) {
+                alert('로그인 후 이용 가능합니다');
+                return;
+              }
+              likeMutate();
+            }}
             className='mb-5 rounded-lg border border-red-400 bg-red-400 px-3 py-1 text-sm text-white hover:border-red-500 hover:bg-red-500 md:text-base'
           >
             {isLike ? '추천취소' : '추천하기'}
