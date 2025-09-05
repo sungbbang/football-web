@@ -23,6 +23,7 @@ import RegisterPage from './pages/RegisterPage';
 import ProtectedRoute from './routes/ProtectedRoute';
 import PostCreatePage from './pages/PostCreatePage';
 import PostPage from './pages/PostPage';
+import PostEditPage from './pages/PostEditPage';
 
 const queryClient = new QueryClient();
 
@@ -68,6 +69,11 @@ const router = createBrowserRouter([
         children: [
           { path: '/my', element: <UserPage /> },
           { path: '/write', element: <PostCreatePage /> },
+          {
+            path: '/edit-post/:id',
+            element: <PostEditPage />,
+            loader: postLoader(queryClient),
+          },
         ],
       },
     ],

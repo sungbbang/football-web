@@ -25,3 +25,10 @@ export const likePost = async id => {
   const res = await instance.post(`/${id}/like`, {}, { withCredentials: true });
   return res.data;
 };
+
+export const editPost = async (id, postData) => {
+  const res = await instance.patch(`/${id}`, postData, {
+    withCredentials: true,
+  });
+  return res.data;
+};
