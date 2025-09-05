@@ -123,7 +123,7 @@ function PostEditPage() {
             type='button'
             onClick={() => {
               alert('취소해 원래 게시글로 이동합니다.');
-              navigate(`/board/${post._id}`, { replace: true });
+              navigate(-1, { replace: true });
             }}
             className='rounded-lg border border-gray-500 px-3 py-1 text-sm hover:bg-gray-500 hover:text-white md:text-lg lg:text-xl'
           >

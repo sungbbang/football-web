@@ -23,7 +23,7 @@ function PostPage() {
   return (
     <div className='mt-15'>
       <button
-        onClick={() => navigate(-1)}
+        onClick={() => navigate('/board')}
         className='mb-5 rounded-lg border border-gray-300 bg-gray-300 px-2 py-1 text-sm hover:border-blue-500 hover:bg-blue-500 hover:text-white md:text-base'
       >
         목록 돌아가기
@@ -94,6 +94,8 @@ function PostPage() {
           placeholder='댓글을 입력해주세요'
           className='h-[100px] w-full resize-none rounded border p-2 md:text-lg'
         />
+
+        {/* 댓글 기능 구현 */}
 
         <div className='text-right'>
           <button
