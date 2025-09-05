@@ -1,12 +1,51 @@
 const express = require('express');
 const Comment = require('../models/Comment');
+const { authenticateToken } = require('../middlewares/authMiddleware');
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
-    const postId = req.query.postId;
+    const postId = req.params.id;
     const comments = await Comment.find({ postId }).sort({ createdAt: -1 });
     return res.json({ status: 'success', result: comments });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: 'error', message: 'Server error' });
+  }
+});
+
+router.post('/:id', authenticateToken, async (req, res) => {
+  const postId = req.params.id;
+  const content = req.body;
+  const { authorId, authorNickname } = req.user;
+  if (!content) {
+    return res
+      .status(400)
+      .json({ status: 'error', message: '내용을 입력해주세요.' });
+  }
+
+  try {
+    const newComment = new Comment({
+      postId,
+      content,
+      authorId,
+      authorNickname,
+    });
+    await newComment.save();
+
+    const updatedPost = await Post.findByIdAndUpdate(
+      postId,
+      { $inc: { commentsCount: 1 } },
+      { new: true }
+    );
+
+    if (!updatedPost) {
+      console.warn(
+        '게시글을 찾을 수 없어 commentsCount를 업데이트하지 못했습니다.'
+      );
+    }
+
+    res.status(201).json({ status: 'success', result: newComment });
   } catch (err) {
     console.error(err);
     res.status(500).json({ status: 'error', message: 'Server error' });
