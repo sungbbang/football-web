@@ -8,7 +8,7 @@ export function useEditPostMutation(postId) {
   const keys = ['post', postId];
   return useMutation({
     mutationFn: postData => editPost(postId, postData),
-    onMutate: async newPostData => {
+    onMutate: async postData => {
       await queryClient.cancelQueries({ queryKey: keys });
 
       const previousPost = queryClient.getQueryData({ queryKey: keys });
@@ -19,7 +19,7 @@ export function useEditPostMutation(postId) {
           ...old,
           result: {
             ...old.result,
-            ...newPostData,
+            ...postData,
           },
         };
       });
