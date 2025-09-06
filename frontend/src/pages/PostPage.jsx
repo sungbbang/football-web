@@ -7,6 +7,8 @@ import { formatPostDate } from '../utils/formatPostDate';
 import Loading from '../components/Loading/Loading';
 import { useLikePostMutation } from '../hooks/useLikePostMutation';
 import { useDeletePostMutation } from '../hooks/useDeletePostMutation';
+import { useCreateCommentMutation } from '../hooks/useCreateCommentMutation';
+import CommentList from '../components/Comment/CommentList';
 
 function PostPage() {
   const navigate = useNavigate();
@@ -19,6 +21,26 @@ function PostPage() {
   const commentRef = useRef(null);
   const { mutate: likeMutate } = useLikePostMutation(postId, user?._id);
   const { mutate: deleteMutate } = useDeletePostMutation(postId);
+  const { mutate: createCommentMutate } = useCreateCommentMutation(
+    postId,
+    commentRef,
+  );
+
+  const onSubmitCommentForm = async e => {
+    e.preventDefault();
+
+    const commentContent = commentRef.current.value;
+
+    if (!commentContent) {
+      alert('댓글 내용을 입력해주세요.');
+      commentRef.current.focus();
+      return;
+    }
+
+    const commentData = { content: commentContent };
+
+    createCommentMutate(commentData);
+  };
 
   return (
     <div className='mt-15'>
@@ -87,15 +109,13 @@ function PostPage() {
         </div>
       )}
 
-      <form className='mt-10'>
+      <form onSubmit={onSubmitCommentForm} className='mt-10'>
         <textarea
           ref={commentRef}
           required
           placeholder='댓글을 입력해주세요'
           className='h-[100px] w-full resize-none rounded border p-2 md:text-lg'
         />
-
-        {/* 댓글 기능 구현 */}
 
         <div className='text-right'>
           <button
@@ -110,7 +130,7 @@ function PostPage() {
       <div>
         <div className='font-bold md:text-2xl'>댓글 {post.commentsCount}개</div>
         <Suspense fallback={<Loading />}>
-          {/* <CommentList postId={postId} /> */}
+          <CommentList postId={postId} />
         </Suspense>
       </div>
     </div>
