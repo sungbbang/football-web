@@ -9,6 +9,11 @@ export const fetchCommentsByPostId = async postId => {
   return res.data;
 };
 
+export const fetchUserComments = async () => {
+  const res = await instance.get('/me', { withCredentials: true });
+  return res.data;
+};
+
 export const createComment = async (postId, commentData) => {
   const res = await instance.post(`/${postId}`, commentData, {
     withCredentials: true,

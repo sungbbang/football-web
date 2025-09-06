@@ -16,6 +16,11 @@ export const fetchPosts = async () => {
   return res.data;
 };
 
+export const fetchUserPosts = async () => {
+  const res = await instance.get('/me', { withCredentials: true });
+  return res.data;
+};
+
 export const fetchPostById = async id => {
   const res = await instance.get(`/${id}`);
   return res.data;

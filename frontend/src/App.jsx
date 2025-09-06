@@ -24,6 +24,9 @@ import ProtectedRoute from './routes/ProtectedRoute';
 import PostCreatePage from './pages/PostCreatePage';
 import PostPage from './pages/PostPage';
 import PostEditPage from './pages/PostEditPage';
+import UserPostPage from './pages/UserPostPage';
+import UserCommentPage from './pages/UserCommentPage';
+import { userCommentsLoader, userPostsLoader } from './loaders/userLoader';
 
 const queryClient = new QueryClient();
 
@@ -73,6 +76,16 @@ const router = createBrowserRouter([
             path: '/edit-post/:id',
             element: <PostEditPage />,
             loader: postLoader(queryClient),
+          },
+          {
+            path: '/my/post',
+            element: <UserPostPage />,
+            loader: userPostsLoader(queryClient),
+          },
+          {
+            path: '/my/comment',
+            element: <UserCommentPage />,
+            loader: userCommentsLoader(queryClient),
           },
         ],
       },
