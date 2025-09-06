@@ -1,5 +1,6 @@
 const express = require('express');
 const Comment = require('../models/Comment');
+const Post = require('../models/Post');
 const { authenticateToken } = require('../middlewares/authMiddleware');
 const router = express.Router();
 
@@ -16,8 +17,8 @@ router.get('/:id', async (req, res) => {
 
 router.post('/:id', authenticateToken, async (req, res) => {
   const postId = req.params.id;
-  const content = req.body;
-  const { authorId, authorNickname } = req.user;
+  const { content } = req.body;
+  const { _id, nickname } = req.user;
   if (!content) {
     return res
       .status(400)
@@ -28,8 +29,8 @@ router.post('/:id', authenticateToken, async (req, res) => {
     const newComment = new Comment({
       postId,
       content,
-      authorId,
-      authorNickname,
+      authorId: _id,
+      authorNickname: nickname,
     });
     await newComment.save();
 
@@ -46,6 +47,43 @@ router.post('/:id', authenticateToken, async (req, res) => {
     }
 
     res.status(201).json({ status: 'success', result: newComment });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: 'error', message: 'Server error' });
+  }
+});
+
+router.patch('/:commentId', authenticateToken, async (req, res) => {
+  const commentId = req.params.commentId;
+  const { content } = req.body;
+  const userId = req.user._id;
+
+  if (!content || content.trim() === '') {
+    return res
+      .status(400)
+      .json({ status: 'error', message: '댓글 내용을 입력해주세요.' });
+  }
+
+  try {
+    const comment = await Comment.findById(commentId);
+    if (!comment) {
+      return res
+        .status(404)
+        .json({ status: 'error', message: '댓글을 찾을 수 없습니다.' });
+    }
+
+    if (comment.authorId.toString() !== userId.toString()) {
+      return res.status(403).json({
+        status: 'error',
+        message: '작성자가 아니므로 수정할 수 없습니다.',
+      });
+    }
+
+    comment.content = content;
+    comment.updatedAt = Date.now();
+    await comment.save();
+
+    res.json({ status: 'success', result: comment });
   } catch (err) {
     console.error(err);
     res.status(500).json({ status: 'error', message: 'Server error' });
