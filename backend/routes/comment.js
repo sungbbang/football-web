@@ -4,6 +4,28 @@ const Post = require('../models/Post');
 const { authenticateToken } = require('../middlewares/authMiddleware');
 const router = express.Router();
 
+router.get('/me', authenticateToken, async (req, res) => {
+  try {
+    const comments = await Comment.find({ authorId: req.user._id })
+      .populate('postId', 'title authorNickname')
+      .sort({ createdAt: -1 });
+
+    const myComments = comments.map(c => ({
+      _id: c._id,
+      content: c.content,
+      createdAt: c.createdAt,
+      postId: c.postId._id,
+      postTitle: c.postId.title,
+      postAuthor: c.postId.authorNickname,
+    }));
+
+    res.json({ status: 'success', result: myComments });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: 'error', message: 'Server error' });
+  }
+});
+
 router.get('/:id', async (req, res) => {
   try {
     const postId = req.params.id;

@@ -1,5 +1,6 @@
 const express = require('express');
 const Post = require('../models/Post');
+const Comment = require('../models/Comment');
 const { authenticateToken } = require('../middlewares/authMiddleware');
 const router = express.Router();
 
@@ -7,6 +8,18 @@ router.get('/', async (req, res) => {
   try {
     const posts = await Post.find().sort({ createdAt: -1 });
     res.json({ status: 'success', result: posts });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: 'error', message: 'Server error' });
+  }
+});
+
+router.get('/me', authenticateToken, async (req, res) => {
+  try {
+    const myPosts = await Post.find({ authorId: req.user._id }).sort({
+      createdAt: -1,
+    });
+    res.json({ status: 'success', result: myPosts });
   } catch (err) {
     console.error(err);
     res.status(500).json({ status: 'error', message: 'Server error' });
@@ -81,6 +94,7 @@ router.delete('/:id', authenticateToken, async (req, res) => {
     }
 
     await post.deleteOne();
+    await Comment.deleteMany({ postId: postId });
 
     res.json({ status: 'success', message: '게시글이 삭제되었습니다.' });
   } catch (err) {
