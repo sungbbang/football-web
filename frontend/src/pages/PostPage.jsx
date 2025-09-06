@@ -45,10 +45,10 @@ function PostPage() {
   return (
     <div className='mt-15'>
       <button
-        onClick={() => navigate('/board')}
+        onClick={() => navigate(-1)}
         className='mb-5 rounded-lg border border-gray-300 bg-gray-300 px-2 py-1 text-sm hover:border-blue-500 hover:bg-blue-500 hover:text-white md:text-base'
       >
-        목록 돌아가기
+        뒤로 가기
       </button>
       <div className='relative space-y-4 pb-4 after:absolute after:bottom-0 after:left-0 after:block after:h-px after:w-full after:bg-gray-300 after:content-[""]'>
         <h1 className='text-lg font-bold tracking-wide md:text-xl'>
