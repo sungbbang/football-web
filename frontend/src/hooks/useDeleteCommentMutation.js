@@ -33,6 +33,7 @@ export function useDeleteCommentMutation(commentId, postId) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['comments', postId] });
       queryClient.invalidateQueries({ queryKey: ['post', postId] });
+      queryClient.invalidateQueries({ queryKey: ['posts'] });
       alert('댓글이 삭제되었습니다.');
     },
   });
