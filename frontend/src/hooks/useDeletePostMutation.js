@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { deletePost } from '../api/post';
 
-export function useDeletePostMutation(postId) {
+export function useDeletePostMutation(postId, search) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   return useMutation({
@@ -28,8 +28,10 @@ export function useDeletePostMutation(postId) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] });
+      queryClient.invalidateQueries({ queryKey: ['userPosts'] });
       alert('게시글이 삭제되었습니다.');
-      navigate(`/board`, { replace: true });
+      const redirectPath = search ? '/my/post' : '/board';
+      navigate(redirectPath, { replace: true });
     },
   });
 }

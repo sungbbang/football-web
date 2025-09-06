@@ -117,7 +117,7 @@ function UserPostPage() {
                 <tr
                   key={post._id}
                   className='cursor-pointer hover:bg-gray-50'
-                  onClick={() => navigate(`/board/${post._id}`)}
+                  onClick={() => navigate(`/board/${post._id}?from=my`)}
                 >
                   <td className='py-2 text-center text-sm whitespace-nowrap'>
                     {post.number}
@@ -151,7 +151,7 @@ function UserPostPage() {
           paginatedPosts.map(post => (
             <li key={post._id}>
               <div className='border-b border-gray-300 p-2'>
-                <Link to={`/board/${post._id}`} className='space-y-1'>
+                <Link to={`/board/${post._id}?from=my`} className='space-y-1'>
                   <div className='flex justify-between'>
                     <span className='text-sm'>
                       {post.title.length <= 20

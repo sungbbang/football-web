@@ -1,5 +1,5 @@
 import React, { Suspense, useRef } from 'react';
-import { useLoaderData, useNavigate } from 'react-router-dom';
+import { useLoaderData, useLocation, useNavigate } from 'react-router-dom';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { postQuery } from '../query';
 import { useUser } from '../contexts/UserContext';
@@ -12,6 +12,7 @@ import CommentList from '../components/Comment/CommentList';
 
 function PostPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user } = useUser();
   const { postId } = useLoaderData();
   const { data: postData } = useSuspenseQuery(postQuery(postId));
@@ -20,7 +21,10 @@ function PostPage() {
   const isLike = post.likedUsers.includes(user?._id);
   const commentRef = useRef(null);
   const { mutate: likeMutate } = useLikePostMutation(postId, user?._id);
-  const { mutate: deleteMutate } = useDeletePostMutation(postId);
+  const { mutate: deleteMutate } = useDeletePostMutation(
+    postId,
+    location.search,
+  );
   const { mutate: createCommentMutate } = useCreateCommentMutation(
     postId,
     commentRef,
