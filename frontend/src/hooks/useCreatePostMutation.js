@@ -7,7 +7,7 @@ export function useCreatePostMutation() {
   const navigate = useNavigate();
   return useMutation({
     mutationFn: postData => createPost(postData),
-    onMutate: async newPost => {
+    onMutate: async postData => {
       await queryClient.cancelQueries({ queryKey: ['posts'] });
 
       const previousPosts = queryClient.getQueryData({ queryKey: ['posts'] });
@@ -16,7 +16,7 @@ export function useCreatePostMutation() {
         if (!old) return old;
         return {
           ...old,
-          result: [newPost, ...old.result],
+          result: [postData, ...old.result],
         };
       });
 
