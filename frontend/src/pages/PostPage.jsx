@@ -1,4 +1,4 @@
-import React, { Suspense, useRef } from 'react';
+import React, { Suspense, useEffect, useRef } from 'react';
 import { useLoaderData, useLocation, useNavigate } from 'react-router-dom';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { postQuery } from '../query';
@@ -9,6 +9,7 @@ import { useLikePostMutation } from '../hooks/useLikePostMutation';
 import { useDeletePostMutation } from '../hooks/useDeletePostMutation';
 import { useCreateCommentMutation } from '../hooks/useCreateCommentMutation';
 import CommentList from '../components/Comment/CommentList';
+import { useUpdateViewMutation } from '../hooks/useUpdateViewMutation';
 
 function PostPage() {
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ function PostPage() {
     postId,
     commentRef,
   );
+  const { mutate: updateViewMutate } = useUpdateViewMutation(postId);
 
   const onSubmitCommentForm = async e => {
     e.preventDefault();
@@ -45,6 +47,12 @@ function PostPage() {
 
     createCommentMutate(commentData);
   };
+
+  useEffect(() => {
+    if (postId) {
+      updateViewMutate();
+    }
+  }, [postId, updateViewMutate]);
 
   return (
     <div className='mt-15'>

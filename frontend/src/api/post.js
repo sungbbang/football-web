@@ -42,3 +42,8 @@ export const deletePost = async id => {
   const res = await instance.delete(`/${id}`, { withCredentials: true });
   return res.data;
 };
+
+export const updateView = async id => {
+  const res = await instance.post(`/${id}/view`, {}, { withCredentials: true });
+  return res.data;
+};
