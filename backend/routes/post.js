@@ -2,6 +2,9 @@ const express = require('express');
 const Post = require('../models/Post');
 const Comment = require('../models/Comment');
 const { authenticateToken } = require('../middlewares/authMiddleware');
+const {
+  optionalAuthenticateToken,
+} = require('../middlewares/optionalAuthMiddleware');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
@@ -163,10 +166,45 @@ router.post('/:id/like', authenticateToken, async (req, res) => {
 
     res.status(200).json({
       status: 'success',
-      data: {
+      result: {
         isLiked: !hasLiked,
         likesCount: updatedPost.likesCount,
       },
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ status: 'error', message: 'Server error' });
+  }
+});
+
+router.post('/:id/view', optionalAuthenticateToken, async (req, res) => {
+  const postId = req.params.id;
+  const viewerId = req.user ? req.user._id : null;
+
+  try {
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res
+        .status(404)
+        .json({ status: 'error', message: '게시글을 찾을 수 없습니다.' });
+    }
+
+    if (viewerId && viewerId.toString() === post.authorId.toString()) {
+      return res.status(200).json({
+        status: 'success',
+        message: '작성자의 조회는 조회수에 반영되지 않습니다.',
+        result: { views: post.views },
+      });
+    }
+
+    post.views += 1;
+    await post.save();
+
+    return res.status(200).json({
+      status: 'success',
+      message: '조회수가 증가했습니다.',
+      result: { views: post.views },
     });
   } catch (err) {
     console.error(err);
