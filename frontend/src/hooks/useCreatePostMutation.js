@@ -10,9 +10,9 @@ export function useCreatePostMutation() {
     onMutate: async postData => {
       await queryClient.cancelQueries({ queryKey: ['posts'] });
 
-      const previousPosts = queryClient.getQueryData({ queryKey: ['posts'] });
+      const previousPosts = queryClient.getQueryData(['posts']);
 
-      queryClient.setQueryData({ queryKey: ['posts'] }, old => {
+      queryClient.setQueryData(['posts'], old => {
         if (!old) return old;
         return {
           ...old,
@@ -23,7 +23,7 @@ export function useCreatePostMutation() {
       return { previousPosts };
     },
     onError: (err, _, context) => {
-      queryClient.setQueryData({ queryKey: ['posts'] }, context.previousPosts);
+      queryClient.setQueryData(['posts'], context.previousPosts);
       alert('게시글 등록에 실패했습니다. 다시 시도해주세요.');
     },
     onSuccess: data => {

@@ -9,11 +9,9 @@ export function useCreateCommentMutation(postId, commentRef) {
     onMutate: async commentData => {
       await queryClient.cancelQueries({ queryKey: ['comments', postId] });
 
-      const previousComments = queryClient.getQueryData({
-        queryKey: ['comments', postId],
-      });
+      const previousComments = queryClient.getQueryData(['comments', postId]);
 
-      queryClient.setQueryData({ queryKey: ['comments', postId] }, old => {
+      queryClient.setQueryData(['comments', postId], old => {
         if (!old) return old;
         return {
           ...old,
@@ -25,10 +23,7 @@ export function useCreateCommentMutation(postId, commentRef) {
     },
 
     onError: (err, _, context) => {
-      queryClient.setQueryData(
-        { queryKey: ['comments', postId] },
-        context.previousComments,
-      );
+      queryClient.setQueryData(['comments', postId], context.previousComments);
       alert('댓글 등록에 실패했습니다. 다시 시도해주세요.');
     },
     onSuccess: () => {

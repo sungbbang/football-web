@@ -11,9 +11,9 @@ export function useEditPostMutation(postId) {
     onMutate: async postData => {
       await queryClient.cancelQueries({ queryKey: keys });
 
-      const previousPost = queryClient.getQueryData({ queryKey: keys });
+      const previousPost = queryClient.getQueryData(keys);
 
-      queryClient.setQueryData({ queryKey: keys }, old => {
+      queryClient.setQueryData(keys, old => {
         if (!old) return old;
         return {
           ...old,
@@ -27,12 +27,7 @@ export function useEditPostMutation(postId) {
       return { previousPost };
     },
     onError: (err, _, context) => {
-      queryClient.setQueryData(
-        {
-          queryKey: keys,
-        },
-        context.previousPost,
-      );
+      queryClient.setQueryData(keys, context.previousPost);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

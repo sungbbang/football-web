@@ -9,11 +9,9 @@ export function useDeleteCommentMutation(commentId, postId) {
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: ['comments', postId] });
 
-      const previousComments = queryClient.getQueryData({
-        queryKey: ['comments', postId],
-      });
+      const previousComments = queryClient.getQueryData(['comments', postId]);
 
-      queryClient.setQueryData({ queryKey: ['comments', postId] }, old => {
+      queryClient.setQueryData(['comments', postId], old => {
         if (!old) return old;
         return {
           ...old,
@@ -24,10 +22,7 @@ export function useDeleteCommentMutation(commentId, postId) {
       return { previousComments };
     },
     onError: (err, _, context) => {
-      queryClient.setQueryData(
-        { queryKey: ['comments', postId] },
-        context.previousComments,
-      );
+      queryClient.setQueryData(['comments', postId], context.previousComments);
       alert('댓글 삭제에 실패했습니다. 다시 시도해주세요.');
     },
     onSuccess: () => {
