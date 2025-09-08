@@ -28,6 +28,7 @@ import UserPostPage from './pages/UserPostPage';
 import UserCommentPage from './pages/UserCommentPage';
 import { userCommentsLoader, userPostsLoader } from './loaders/userLoader';
 import NotFound from './components/Error/NotFound';
+import { ErrorBoundary } from './routes/ErrorBoundary';
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
+    errorElement: <ErrorBoundary />,
     children: [
       { index: true, element: <HomePage /> },
       {

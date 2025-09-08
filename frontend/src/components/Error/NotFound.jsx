@@ -8,7 +8,7 @@ function NotFound() {
       <h2 className='text-xl lg:text-2xl'>404 | 페이지를 찾을 수 없습니다.</h2>
       <button
         className='cursor-pointer rounded-lg border p-3 hover:bg-gray-400 hover:text-white'
-        onClick={() => navigate('/')}
+        onClick={() => navigate('/', { replace: true })}
       >
         메인으로 돌아가기
       </button>
