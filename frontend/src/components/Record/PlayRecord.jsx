@@ -40,7 +40,7 @@ function PlayerRecord({ tab, selectedLeague, selectedSeason }) {
         <tbody>
           {data.result.length === 0 ? (
             <tr>
-              <td colspan={8} className='py-4 text-center text-gray-500'>
+              <td colSpan={8} className='py-4 text-center text-gray-500'>
                 선수 순위정보가 없습니다.
               </td>
             </tr>

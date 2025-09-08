@@ -39,7 +39,7 @@ function TeamRecord({ selectedLeague, selectedSeason }) {
         <tbody>
           {data.result.length === 0 ? (
             <tr>
-              <td colspan={10} className='py-4 text-center text-gray-500'>
+              <td colSpan={10} className='py-4 text-center text-gray-500'>
                 팀 순위정보가 없습니다.
               </td>
             </tr>
