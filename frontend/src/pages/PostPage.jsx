@@ -49,10 +49,14 @@ function PostPage() {
   };
 
   useEffect(() => {
-    if (postId) {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, []);
+
+  useEffect(() => {
+    if (postId && post.authorId !== user._id) {
       updateViewMutate();
     }
-  }, [postId, updateViewMutate]);
+  }, [postId, updateViewMutate, post.authorId, user._id]);
 
   return (
     <div className='mt-15'>
