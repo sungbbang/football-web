@@ -34,6 +34,9 @@ function PostPage() {
 
   const onSubmitCommentForm = async e => {
     e.preventDefault();
+    if (!user) {
+      return alert('로그인 후 이용 가능합니다.');
+    }
 
     const commentContent = commentRef.current.value;
 
@@ -53,10 +56,10 @@ function PostPage() {
   }, []);
 
   useEffect(() => {
-    if (postId && post.authorId !== user._id) {
+    if (postId && post.authorId !== user?._id) {
       updateViewMutate();
     }
-  }, [postId, updateViewMutate, post.authorId, user._id]);
+  }, [postId, updateViewMutate, post.authorId, user?._id]);
 
   return (
     <div className='mt-15'>
