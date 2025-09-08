@@ -113,12 +113,13 @@ function RecordPage() {
         </ul>
 
         <Suspense fallback={<Loading />}>
-          {selectedTab === 'teamRank' ? (
+          {selectedTab === 'teamRank' && (
             <TeamRecord
               selectedLeague={selectedLeague}
               selectedSeason={selectedSeason}
             />
-          ) : (
+          )}
+          {(selectedTab === 'topassistor' || selectedTab === 'topscorer') && (
             <PlayerRecord
               tab={selectedTab}
               selectedLeague={selectedLeague}
