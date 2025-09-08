@@ -32,10 +32,10 @@ function UserPostPage() {
   return (
     <div className='mt-15'>
       <button
-        onClick={() => navigate(-1)}
+        onClick={() => navigate('/my')}
         className='mb-5 rounded-lg border border-gray-300 bg-gray-300 px-2 py-1 text-sm hover:border-blue-500 hover:bg-blue-500 hover:text-white md:text-base'
       >
-        뒤로 가기
+        마이페이지
       </button>
       <div className='mb-10 flex items-center justify-between'>
         <h1 className='text-left text-xl font-bold md:text-2xl lg:text-3xl'>
