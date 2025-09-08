@@ -42,7 +42,7 @@ function UserPage() {
           <div className='space-y-3 text-lg text-gray-600'>
             <p>
               <span className='font-medium text-gray-700'>이메일:</span>{' '}
-              {user.username}
+              {user.email}
             </p>
           </div>
         </div>
