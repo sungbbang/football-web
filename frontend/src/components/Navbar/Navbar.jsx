@@ -27,7 +27,7 @@ function Navbar() {
         <div>
           <h1 className='text-2xl font-bold lg:text-3xl xl:text-4xl'>
             <Link to='/' onClick={handleClickLink}>
-              Football-web
+              Football-Web
             </Link>
           </h1>
         </div>
