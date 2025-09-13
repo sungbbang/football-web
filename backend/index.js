@@ -13,6 +13,7 @@ const recordRoute = require('./routes/record');
 const userRoute = require('./routes/user');
 const postRoute = require('./routes/post');
 const commentRoute = require('./routes/comment');
+const { startDailyScheduler } = require('./scripts/startDailyScheduler');
 
 connectDB()
   .then(() => {
@@ -38,6 +39,7 @@ connectDB()
 
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
+      startDailyScheduler();
     });
   })
   .catch(error => {

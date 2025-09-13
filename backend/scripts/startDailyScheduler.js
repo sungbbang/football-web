@@ -36,6 +36,7 @@ const dataUpdateTasks = [
 ];
 
 async function dailyUpdateData() {
+  console.log('daily Update Data...');
   const leagueList = await League.find();
   const currentLeagueSeasons = leagueList.flatMap(league =>
     league.seasons
@@ -117,7 +118,6 @@ function startDailyScheduler() {
       timezone: 'Asia/Seoul',
     }
   );
-  console.log('정기 데이터 갱신 스케줄러가 시작되었습니다. (매일 오전 9시)');
 }
 
 module.exports = { startDailyScheduler, dailyUpdateData };
