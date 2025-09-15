@@ -1,0 +1,14 @@
+name: Daily Scheduler Trigger
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # UTC 기준, 매일 0시 → KST 9시
+  workflow_dispatch:
+
+jobs:
+  trigger-scheduler:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Render Scheduler API
+        run: curl -X GET "https://football-web-0shp.onrender.com/api/scheduler/run?secret=${{ secrets.SCHEDULER_SECRET }}"
