@@ -137,8 +137,8 @@ router.post('/logout', (req, res) => {
 
   res.clearCookie('token', {
     httpOnly: true,
-    secure: false,
-    sameSite: 'strict',
+    secure: true,
+    sameSite: 'none',
   });
 
   return res.json({ status: 'success', message: '로그아웃되었습니다.' });
