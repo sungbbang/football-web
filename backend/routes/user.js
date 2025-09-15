@@ -96,11 +96,18 @@ router.post('/login', async (req, res) => {
       expiresIn: '24h',
     });
 
+    // res.cookie('token', token, {
+    //   httpOnly: true,
+    //   secure: false,
+    //   sameSite: 'strict',
+    //   maxAge: 24 * 60 * 60 * 1000,
+    // });
+
     res.cookie('token', token, {
       httpOnly: true,
-      secure: false,
-      sameSite: 'strict',
-      maxAge: 24 * 60 * 60 * 1000,
+      secure: true, // HTTPS 필수
+      sameSite: 'none', // cross-site 요청 허용
+      maxAge: 10 * 60 * 1000,
     });
 
     const userResponse = {
