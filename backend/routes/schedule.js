@@ -28,9 +28,9 @@ router.get('/dateRange', async (req, res) => {
 
 router.get('/nearest-date', async (req, res) => {
   try {
-    // 기준일 설정: 쿼리스트링이 있으면 해당 날짜, 없으면 오늘
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const todayKST = new Date(today.getTime() + 9 * 60 * 60 * 1000);
+    todayKST.setHours(0, 0, 0, 0);
     const queryCategory = req.query.category;
 
     if (
@@ -52,7 +52,7 @@ router.get('/nearest-date', async (req, res) => {
     // 1) 기준일 이후(>=) 중 가장 가까운 미래 경기 조회
     let nearestMatch = await Schedule.findOne({
       ...baseQuery,
-      date: { $gte: today },
+      date: { $gte: todayKST },
     }).sort({ date: 1 });
 
     // 미래 경기 있으면 바로 반환
