@@ -28,9 +28,20 @@ router.get('/dateRange', async (req, res) => {
 
 router.get('/nearest-date', async (req, res) => {
   try {
-    const today = new Date();
-    const todayKST = new Date(today.getTime() + 9 * 60 * 60 * 1000);
-    todayKST.setHours(0, 0, 0, 0);
+    const now = new Date();
+    const todayKST = new Date(
+      Date.UTC(
+        now.getUTCFullYear(),
+        now.getUTCMonth(),
+        now.getUTCDate() - 1,
+        15,
+        0,
+        0
+      )
+    );
+
+    console.log(todayKST);
+
     const queryCategory = req.query.category;
 
     if (
