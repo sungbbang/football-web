@@ -99,14 +99,16 @@ router.get('/all/monthly', async (req, res) => {
 
     const [y, m] = req.query.date.split('-').map(Number);
 
-    const start = new Date(y, m - 1);
-    const end = new Date(y, m, 1);
+    // 한국시간 기준으로 월의 시작과 끝
+    const startKST = new Date(y, m - 1, 1); // KST 9월 1일 00:00
+    const endKST = new Date(y, m, 1); // KST 10월 1일 00:00
+
+    // UTC 기준으로 변환
+    const startUTC = new Date(startKST.getTime() - 9 * 60 * 60 * 1000);
+    const endUTC = new Date(endKST.getTime() - 9 * 60 * 60 * 1000);
 
     const monthlySchedule = await Schedule.find(
-      {
-        date: { $gte: start, $lt: end },
-      },
-      // 필요없는 필드는 제외
+      { date: { $gte: startUTC, $lt: endUTC } },
       {
         __v: 0,
         _id: 0,
@@ -115,9 +117,7 @@ router.get('/all/monthly', async (req, res) => {
         homeTeamId: 0,
         leagueId: 0,
       }
-    )
-      .sort({ date: 1 })
-      .lean();
+    ).sort({ date: 1 });
 
     res.json({ status: 'success', result: { schedule: monthlySchedule } });
   } catch (err) {
