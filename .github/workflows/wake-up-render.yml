@@ -1,0 +1,13 @@
+name: Wake Up Render App
+
+on:
+  schedule:
+    - cron: '*/10 * * * *' # 매 10분마다
+
+jobs:
+  wake-up:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wake Up Render Server
+        run: |
+          curl -m 10 https://football-web-0shp.onrender.com || echo "Request failed"
