@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
         __v: 0,
         leagueName: 0,
       }
-    );
+    ).sort({ rank: 1 });
 
     res.json({ status: 'success', result: teamRecord });
   } catch (err) {
