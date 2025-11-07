@@ -18,7 +18,7 @@ router.get('/topScorer', async (req, res) => {
         __v: 0,
         leagueName: 0,
       }
-    );
+    ).sort({ goals: -1 });
 
     res.json({ status: 'success', result: topScorers });
   } catch (err) {
@@ -42,7 +42,7 @@ router.get('/topAssistor', async (req, res) => {
         __v: 0,
         leagueName: 0,
       }
-    );
+    ).sort({ assists: -1 });
 
     res.json({ status: 'success', result: topAsisstors });
   } catch (err) {
