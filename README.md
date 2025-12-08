@@ -82,12 +82,15 @@
 ### 배운 점
 
 - React Router와 TanStack Query의 조합
-  Loader에서 prefetch한 데이터를 TanStack Query로 캐싱하는 패턴을 통해, 빠른 페이지 전환과 효율적인 데이터 관리를 동시에 달성할 수 있었음. 두 라이브러리의 장점을 결합하는 방법을 배움
+
+  Loader에서 prefetch한 데이터를 TanStack Query로 캐싱하는 패턴을 통해, 빠른 페이지 전환과 효율적인 데이터 관리를 동시에 달성할 수 있었음.
 
 - URL을 상태로 활용하는 설계
+
   useState를 제거하고 URL을 상태의 유일한 출처로 만들면서, 코드가 단순해지고 예측 가능해짐. SSOT(Single source of truth) 원칙의 중요성을 체감
 
 - 풀스택 개발 경험
+
   프론트엔드부터 백엔드 API, 데이터베이스 설계, 배포까지 전체 과정을 경험하면서 웹 애플리케이션의 전반적인 흐름을 이해
 
 ## 참고
