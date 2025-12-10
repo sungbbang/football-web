@@ -112,7 +112,10 @@ function RecordPage() {
           ))}
         </ul>
 
-        <Suspense fallback={<Loading />}>
+        <Suspense
+          key={selectedLeague + selectedTab + selectedSeason}
+          fallback={<Loading />}
+        >
           {selectedTab === 'teamRank' && (
             <TeamRecord
               selectedLeague={selectedLeague}

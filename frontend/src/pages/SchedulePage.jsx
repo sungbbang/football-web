@@ -49,18 +49,16 @@ function SchedulePage() {
         </ul>
 
         <div className='mt-10 space-y-10'>
-          {!selectedCategory ? (
-            <Suspense fallback={<Loading />}>
+          <Suspense key={selectedCategory || 'all'} fallback={<Loading />}>
+            {!selectedCategory ? (
               <OverallSchedule selectedDate={selectedDate} />
-            </Suspense>
-          ) : (
-            <Suspense fallback={<Loading />}>
+            ) : (
               <LeagueSchedule
                 selectedDate={selectedDate}
                 selectedCategory={selectedCategory}
               />
-            </Suspense>
-          )}
+            )}
+          </Suspense>
         </div>
       </div>
     </div>
